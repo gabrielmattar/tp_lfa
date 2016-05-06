@@ -1,0 +1,23 @@
+<alfabeto> ::=  <seta>  '{' <simbolos> '}' ';'
+<seta> ::= '->'
+<simbolos> ::= <simbolo> | <simbolo>,<simbolos>
+
+<maquina> ::= <nome> '{'
+                        'E' <seta> '{' <estados> '}' ';'
+                        'T' <seta> '{' <transicoes> '}' ';'
+                        'i' <seta> <nome> ';'
+                        'F' <seta> '{' <estadosfinais> '}' ';'
+                      '}'
+
+<nome> ::= <simbolo> | <simbolo><nome>
+
+<estados> ::= <nome> <outrosestados>
+<outrosestados> :: =  ',' <nome> <outrosestados> | <empty>
+
+
+
+<transicoes> ::= <transicao> <outrastransicoes> | <empty>
+<outrastransicoes> ::= ',' <transicao><outrastransicoes> | <empty>
+<transicao> ::= '(' <nome> ',' <simbolo> ')' '=' <nome>
+
+<estadosfinais> ::= <nome> <outrosestados> | <empty>
