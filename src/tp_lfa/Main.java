@@ -21,21 +21,10 @@ public class Main {
         // TODO code application logic here
         try{
             //Lexico l = new Lexico(new FileReader(new File("teste.txt")));
-            Lexico l = new Lexico(new FileReader(new File(args[0])));
+            Lexico l = new Lexico(new FileReader(new File("entrada/entrada.afd")));
             Lexema lex = null;
-            while(true){
-                lex = l.nextToken();
-                if(lex.getType() != TiposLexicos.FIM_DO_ARQUIVO && lex.getType() != TiposLexicos.FIM_INESPERADO){
-                    System.out.println(lex.getToken() + "   " + lex.getType());
-                } else {
-                    System.out.println("FIM " + lex.getToken() + "   " + lex.getType());
-                    break;
-                }
-            }
-            /*Sintatico s = new Sintatico(l);
-            
-            Comando cmd = s.init();
-            cmd.Executar();*/
+            Sintatico s = new Sintatico(l);
+            s.run();
             
         } catch(Exception ex){
             System.out.println("Erro: " + ex);

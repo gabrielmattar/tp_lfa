@@ -1,4 +1,6 @@
-<alfabeto> ::=  <seta>  '{' <simbolos> '}' ';'
+
+
+<alfabeto> ::=  <simbolo> <seta>  '{' <simbolos> '}' ';'
 <seta> ::= '->'
 <simbolos> ::= <simbolo> | <simbolo>,<simbolos>
 
