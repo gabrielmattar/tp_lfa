@@ -6,7 +6,6 @@
 package tp_lfa;
 
 import Classes.Maquina;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -116,7 +115,7 @@ public class Sintatico {
         return nome;
     }
     
-    private void  procEstados(Maquina maquina) {
+    private void procEstados(Maquina maquina) {
         String nome = procNome();
         maquina.insereEstado(nome);
         

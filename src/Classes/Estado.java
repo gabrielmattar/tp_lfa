@@ -38,7 +38,11 @@ public class Estado {
     public void setFinal() {
         this.ehFinal = true;
     }
-    
+
+    public void setTransicoes(Map<String, Estado> transicoes) {
+        this.transicoes = transicoes;
+    }
+        
     public Map<String, Estado> getTransicoes (){
         return transicoes;
     }
@@ -47,5 +51,15 @@ public class Estado {
     public String getNome(){
         return nome;
     }
+
+    @Override
+    protected Object clone(){
+        Estado e = new Estado(nome);
+        if(ehFinal) e.setFinal();
+        e.setTransicoes(transicoes);
+        return e;
+    }
+    
+    
     
 }

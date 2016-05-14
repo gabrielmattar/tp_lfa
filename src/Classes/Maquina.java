@@ -28,6 +28,16 @@ public class Maquina {
         estados.put(nome, estado);
     }
     
+    public void insereEstado(Estado ... nome){
+        String n = nome[0].getNome();
+        for(Estado e : nome){
+            if(e == nome[0]) continue;
+            n += ", " + e.getNome();
+        }
+        Estado estado = new Estado(n);
+        estados.put(n, estado);
+    }
+    
     public void insereTransicao(String nomeOrigem, String valor, String nomeDestino){
         Estado origem = estados.get(nomeOrigem);
         Estado destino = estados.get(nomeDestino);

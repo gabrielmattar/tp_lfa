@@ -54,7 +54,7 @@ public class Main {
         String inicial = inicialm1.getNome() + ", " + inicialm2.getNome();
         
         //Estados iniciais de m1 e m2 para definir o inicial do produto
-        m3.insereEstado(inicial);
+        m3.insereEstado(inicialm1, inicialm2);
         m3.setInicial(inicial);
         
         
