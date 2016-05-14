@@ -5,6 +5,7 @@
  */
 package tp_lfa;
 
+import Classes.Estado;
 import Classes.Maquina;
 import java.io.File;
 import java.io.FileReader;
@@ -35,13 +36,32 @@ public class Main {
             for(Maquina maquina : maquinas){
                 maquina.printMaquina();
             }
-            for(String nome : alfabeto){
-                System.out.println(nome);
-            }
+            
+            //Produtando as maquinas
+            produtoAFD(maquinas.get(0), maquinas.get(1), alfabeto);
+            
             
         } catch(Exception ex){
             System.out.println("Erro: " + ex);
         }
+        
+        
+    }
+    
+    public static Maquina produtoAFD(Maquina m1, Maquina m2,  List<String> alfabeto){
+        Maquina m3 = new Maquina("Produto");
+        Estado inicialm1 = m1.getInicial(), inicialm2 = m2.getInicial();
+        String inicial = inicialm1.getNome() + ", " + inicialm2.getNome();
+        
+        //Estados iniciais de m1 e m2 para definir o inicial do produto
+        m3.insereEstado(inicial);
+        m3.setInicial(inicial);
+        
+        
+        
+        
+        m3.printMaquina();
+        return m3;
     }
     
 }

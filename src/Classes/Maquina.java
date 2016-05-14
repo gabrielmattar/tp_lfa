@@ -42,6 +42,10 @@ public class Maquina {
         estados.get(nome).setFinal();
     }
     
+    public Estado getInicial(){
+        return inicial;
+    }
+    
     
     public void printMaquina(){
         System.out.println("\n\nNome maquina: " + nome + "\n");
