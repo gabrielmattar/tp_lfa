@@ -32,7 +32,6 @@ public class Maquina {
         Estado origem = estados.get(nomeOrigem);
         Estado destino = estados.get(nomeDestino);
         origem.setTransicao(valor, destino);
-        System.out.println("Transicao " + nomeOrigem + " " +  valor + " " +  nomeDestino);
     }
     
     public void setInicial(String nome){
@@ -41,6 +40,21 @@ public class Maquina {
     
     public void setFinal(String nome){
         estados.get(nome).setFinal();
-        System.out.println("Final " + nome);
+    }
+    
+    
+    public void printMaquina(){
+        System.out.println("\n\nNome maquina: " + nome + "\n");
+        for(Map.Entry<String, Estado> estado : estados.entrySet()){
+            Map<String, Estado> transicoes = estado.getValue().getTransicoes();
+            if(estado.getValue().isFinal()){
+                System.out.println(" " + estado.getKey() + " (final)");
+            } else{ 
+                System.out.println(" " + estado.getKey());
+            }
+            for(Map.Entry<String, Estado> transicao : transicoes.entrySet()) {
+                System.out.println("   " + transicao.getKey() + " " + transicao.getValue().getNome());
+            }
+        }
     }
 }

@@ -39,4 +39,12 @@ public class Estado {
         this.ehFinal = true;
     }
     
+    public Map<String, Estado> getTransicoes (){
+        return transicoes;
+    }
+    
+    public String getNome(){
+        return nome;
+    }
+    
 }

@@ -5,8 +5,11 @@
  */
 package tp_lfa;
 
+import Classes.Maquina;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -24,7 +27,17 @@ public class Main {
             Lexico l = new Lexico(new FileReader(new File("entrada/entrada.afd")));
             Lexema lex = null;
             Sintatico s = new Sintatico(l);
-            s.run();
+            
+            List<Maquina> maquinas = new ArrayList<>() ;
+            List<String> alfabeto = new ArrayList<>() ;
+            s.run(maquinas, alfabeto);
+           
+            for(Maquina maquina : maquinas){
+                maquina.printMaquina();
+            }
+            for(String nome : alfabeto){
+                System.out.println(nome);
+            }
             
         } catch(Exception ex){
             System.out.println("Erro: " + ex);

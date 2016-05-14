@@ -6,6 +6,8 @@
 package tp_lfa;
 
 import Classes.Maquina;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -32,10 +34,10 @@ public class Sintatico {
         }
     }
     
-    public void run() {
-        procAlfabeto();
+    public void run(List<Maquina> maquinas, List<String> alfabeto) {
+        procAlfabeto(alfabeto);
         while(atual.getType() == TiposLexicos.SIMBOLO){
-            procMaquina();
+            maquinas.add(procMaquina());
         }
     }
     
@@ -83,19 +85,21 @@ public class Sintatico {
         
     }
 
-    private void procAlfabeto() {
+    private void procAlfabeto(List<String> alfabeto) {
         matchToken(TiposLexicos.SIMBOLO);
         matchToken(TiposLexicos.SETA);
         matchToken(TiposLexicos.ABRE_CHAVES);
-        procSimbolos();
+        procSimbolos(alfabeto);
         matchToken(TiposLexicos.FECHA_CHAVES);
         matchToken(TiposLexicos.PONTO_VIRGULA);
     }
     
-    private void procSimbolos() {
+    private void procSimbolos(List<String> alfabeto) {
+        alfabeto.add(atual.getToken());
         matchToken(TiposLexicos.SIMBOLO);
         while(atual.getType() == TiposLexicos.VIRGULA) {
             matchToken(TiposLexicos.VIRGULA);
+            alfabeto.add(atual.getToken());
             matchToken(TiposLexicos.SIMBOLO);
         }
     }
