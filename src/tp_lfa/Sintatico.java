@@ -5,6 +5,8 @@
  */
 package tp_lfa;
 
+import Classes.Maquina;
+
 /**
  *
  * @author Andre Dornas & Gabriel Mattar
@@ -37,39 +39,48 @@ public class Sintatico {
         }
     }
     
-    private void procMaquina() {
-        procNome();
+    private Maquina procMaquina() {
+        Maquina maquina;
+        String nome = procNome();
+        maquina = new Maquina(nome);
+        
         matchToken(TiposLexicos.ABRE_CHAVES);
         
         matchToken(TiposLexicos.SIMBOLO);
         matchToken(TiposLexicos.SETA);        
         matchToken(TiposLexicos.ABRE_CHAVES);
-        procEstados();
+        procEstados(maquina);
         matchToken(TiposLexicos.FECHA_CHAVES);        
         matchToken(TiposLexicos.PONTO_VIRGULA);
         
         matchToken(TiposLexicos.SIMBOLO);
         matchToken(TiposLexicos.SETA);        
         matchToken(TiposLexicos.ABRE_CHAVES);
-        procTransicoes();
+        procTransicoes(maquina);
         matchToken(TiposLexicos.FECHA_CHAVES);        
         matchToken(TiposLexicos.PONTO_VIRGULA);
         
         //Proc estado inicial
         matchToken(TiposLexicos.SIMBOLO);
         matchToken(TiposLexicos.SETA);
-        procNome();
+        
+        String inicial = procNome();
+        maquina.setInicial(inicial);
+        
         matchToken(TiposLexicos.PONTO_VIRGULA);
         
         matchToken(TiposLexicos.SIMBOLO);
         matchToken(TiposLexicos.SETA);        
         matchToken(TiposLexicos.ABRE_CHAVES);
-        procEstadosFinais();
+        procEstadosFinais(maquina);
         matchToken(TiposLexicos.FECHA_CHAVES);        
         matchToken(TiposLexicos.PONTO_VIRGULA);
         
         
         matchToken(TiposLexicos.FECHA_CHAVES);
+        
+        return maquina;
+        
     }
 
     private void procAlfabeto() {
@@ -90,50 +101,61 @@ public class Sintatico {
     }
     
     
-    private void procNome() {
+    private String procNome() {
+        String nome = null;
+        nome = atual.getToken();
         matchToken(TiposLexicos.SIMBOLO);
         while(atual.getType() == TiposLexicos.SIMBOLO) {
+            nome += atual.getToken();
             matchToken(TiposLexicos.SIMBOLO);
         }
+        return nome;
     }
     
-    private void  procEstados() {
-        procNome();
+    private void  procEstados(Maquina maquina) {
+        String nome = procNome();
+        maquina.insereEstado(nome);
+        
         while(atual.getType() == TiposLexicos.VIRGULA) {
             matchToken(TiposLexicos.VIRGULA);
-            procNome();
+            nome = procNome();
+            maquina.insereEstado(nome);
         }
     }
     
     //Retornar lista de transicoes 
-    private void procTransicoes() {
+    private void procTransicoes(Maquina maquina) {
         //Pode nao haver transicao
         if(atual.getType() == TiposLexicos.ABRE_PARENTESES) { 
-            procTransicao();
+            procTransicao(maquina);
             while(atual.getType() == TiposLexicos.VIRGULA) {
                 matchToken(TiposLexicos.VIRGULA);
-                procTransicao();
+                procTransicao(maquina);
             }
         }
     }
     
     //Retornar transicao
-    private void procTransicao() {
+    private void procTransicao(Maquina maquina) {
         matchToken(TiposLexicos.ABRE_PARENTESES);
-        procNome();
+        String origem = procNome();
         matchToken(TiposLexicos.VIRGULA);
+        String valor = atual.getToken();
         matchToken(TiposLexicos.SIMBOLO);
         matchToken(TiposLexicos.FECHA_PARENTESES);
         matchToken(TiposLexicos.IGUAL);
-        procNome();
+        String destino = procNome();
+        maquina.insereTransicao(origem, valor, destino);
     }
     
-    private void procEstadosFinais() {
+    private void procEstadosFinais(Maquina maquina) {
         if(atual.getType() == TiposLexicos.SIMBOLO) {
-            procNome();
+            String ehfinal = procNome();
+            maquina.setFinal(ehfinal);
             while(atual.getType() == TiposLexicos.VIRGULA) {
                 matchToken(TiposLexicos.VIRGULA);
-                procNome();
+                ehfinal = procNome();
+                maquina.setFinal(ehfinal);
             }
         }
     }
