@@ -36,6 +36,7 @@ public class Maquina {
     public boolean insereEstado(String nome, boolean m1, boolean m2){
         if(estados.get(nome) == null){
             Estado estado = new Estado(nome);
+            estado.setFimUniaoInter(m1, m2);
             estados.put(nome, estado);
             return true;
         } else {
@@ -62,7 +63,6 @@ public class Maquina {
         return inicial;
     }
     
-    
     public void printMaquina(){
         System.out.println("\n\nNome maquina: " + nome + "\n");
         for(Map.Entry<String, Estado> estado : estados.entrySet()){
@@ -72,7 +72,29 @@ public class Maquina {
             } else{ 
                 System.out.println(" " + estado.getKey());
             }
-            
+            for(Map.Entry<String, Estado> transicao : transicoes.entrySet()) {
+                System.out.println("   " + transicao.getKey() + " " + transicao.getValue().getNome());
+            }
+        }
+    }
+    
+    public void printMaquina(String metodo){
+        System.out.println("\n\nNome maquina: " + nome + "\n");
+        for(Map.Entry<String, Estado> estado : estados.entrySet()){
+            Map<String, Estado> transicoes = estado.getValue().getTransicoes();
+            if("uniao".equals(metodo)){
+                if(estado.getValue().isFimUniao()){
+                    System.out.println(" " + estado.getKey() + " (final)");
+                } else{ 
+                    System.out.println(" " + estado.getKey());
+                }
+            } else if("inter".equals(metodo)){
+                if(estado.getValue().isFimInter()){
+                    System.out.println(" " + estado.getKey() + " (final)");
+                } else{ 
+                    System.out.println(" " + estado.getKey());
+                }
+            }
             for(Map.Entry<String, Estado> transicao : transicoes.entrySet()) {
                 System.out.println("   " + transicao.getKey() + " " + transicao.getValue().getNome());
             }

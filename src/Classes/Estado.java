@@ -41,7 +41,14 @@ public class Estado {
     }
 
     public void setFimUniaoInter(boolean m1, boolean m2){
-        
+        fimInter = false;
+        fimUniao = false;
+        if(m1 && m2) {
+            fimInter = true;
+        }
+        if(m1 || m2) {
+            fimUniao = true;
+        }
     }
             
     public boolean isFimUniao() {

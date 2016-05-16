@@ -40,19 +40,27 @@ public class Main {
                 maquina.printMaquina();
             }
             
+            Main m = new Main();
             //Produtando as maquinas
-            produtoAFD(maquinas.get(0), maquinas.get(1), alfabeto);
-            
+            Maquina produtoAFD = m.produtoAFD(maquinas.get(0), maquinas.get(1), alfabeto);
+            m.Uniao(produtoAFD);
+            m.Intersecao(produtoAFD);
             
             
         } catch(Exception ex){
             System.out.println("Erro: " + ex);
         }
-        
-        
     }
     
-    public static Maquina produtoAFD(Maquina m1, Maquina m2,  List<String> alfabeto){
+    public void Uniao(Maquina m){
+        m.printMaquina("uniao");
+    }
+    
+    public void Intersecao(Maquina m){
+        m.printMaquina("inter");
+    }
+    
+    public Maquina produtoAFD(Maquina m1, Maquina m2,  List<String> alfabeto){
         Maquina m3 = new Maquina("Produto");
         
         //Estados iniciais de m1 e m2 para definir o inicial do produto
