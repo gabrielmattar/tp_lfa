@@ -42,7 +42,12 @@ public class Main {
             
             Main m = new Main();
             //Produtando as maquinas
+            
             Maquina produtoAFD = m.produtoAFD(maquinas.get(0), maquinas.get(1), alfabeto);
+            for (int i = 2; i < maquinas.size(); i++) {
+                produtoAFD = m.produtoAFD(produtoAFD, maquinas.get(i), alfabeto);
+            }
+            
             m.Uniao(produtoAFD);
             m.Intersecao(produtoAFD);
             

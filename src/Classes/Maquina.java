@@ -79,7 +79,7 @@ public class Maquina {
     }
     
     public void printMaquina(String metodo){
-        System.out.println("\n\nNome maquina: " + nome + "\n");
+        System.out.println("\n\nNome maquina: " + nome + "   -> " + metodo + "\n");
         for(Map.Entry<String, Estado> estado : estados.entrySet()){
             Map<String, Estado> transicoes = estado.getValue().getTransicoes();
             if("uniao".equals(metodo)){
