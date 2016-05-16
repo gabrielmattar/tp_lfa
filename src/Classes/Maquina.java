@@ -23,9 +23,14 @@ public class Maquina {
         estados = new HashMap();
     }
     
-    public void insereEstado(String nome){
-        Estado estado = new Estado(nome);
-        estados.put(nome, estado);
+    public boolean insereEstado(String nome){
+        if(estados.get(nome) == null){
+            Estado estado = new Estado(nome);
+            estados.put(nome, estado);
+            return true;
+        } else {
+            return false;
+        }
     }
     
     public void insereEstado(Estado ... nome){
@@ -66,6 +71,7 @@ public class Maquina {
             } else{ 
                 System.out.println(" " + estado.getKey());
             }
+            
             for(Map.Entry<String, Estado> transicao : transicoes.entrySet()) {
                 System.out.println("   " + transicao.getKey() + " " + transicao.getValue().getNome());
             }

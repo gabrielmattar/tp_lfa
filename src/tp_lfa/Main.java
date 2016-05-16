@@ -5,12 +5,15 @@
  */
 package tp_lfa;
 
+import Classes.EstadoCombinado;
 import Classes.Estado;
 import Classes.Maquina;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  *
@@ -50,18 +53,46 @@ public class Main {
     
     public static Maquina produtoAFD(Maquina m1, Maquina m2,  List<String> alfabeto){
         Maquina m3 = new Maquina("Produto");
-        Estado inicialm1 = m1.getInicial(), inicialm2 = m2.getInicial();
-        String inicial = inicialm1.getNome() + ", " + inicialm2.getNome();
         
         //Estados iniciais de m1 e m2 para definir o inicial do produto
-        m3.insereEstado(inicialm1, inicialm2);
-        m3.setInicial(inicial);
+        Estado inicialm1 = m1.getInicial(), inicialm2 = m2.getInicial();
         
         
+        EstadoCombinado inicial = new EstadoCombinado(inicialm1, inicialm2);
         
+        
+        //Comecamos adicionando o incial na fila de estados a serem analisados
+        Queue <EstadoCombinado> estados = new LinkedList();
+        estados.add(inicial);
+        
+        
+        EstadoCombinado atual, transitado;
+        String atualm1, atualm2;
+        while(!estados.isEmpty()){
+            atual = estados.remove();
+            m3.insereEstado(atual.getNomeCombinado());
+            
+            for(String simbolo : alfabeto){
+                
+                if((transitado = atual.getTransicao(simbolo)) != null) {
+                    if(m3.insereEstado(transitado.getNomeCombinado())){
+                        estados.add(transitado);
+                    }
+                    System.out.println("Transicao: " + atual.getNomeCombinado() +" "+ transitado.getNomeCombinado() + " " + simbolo);
+                    
+                    m3.insereTransicao(atual.getNomeCombinado(),  simbolo, transitado.getNomeCombinado());
+                }
+                
+            }
+            
+        }
+        
+        m3.setInicial(inicial.getNomeCombinado()); 
         
         m3.printMaquina();
         return m3;
     }
+    
+    
     
 }
