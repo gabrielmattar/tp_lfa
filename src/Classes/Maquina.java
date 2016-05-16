@@ -33,15 +33,16 @@ public class Maquina {
         }
     }
     
-    public void insereEstado(Estado ... nome){
-        String n = nome[0].getNome();
-        for(Estado e : nome){
-            if(e == nome[0]) continue;
-            n += ", " + e.getNome();
+    public boolean insereEstado(String nome, boolean m1, boolean m2){
+        if(estados.get(nome) == null){
+            Estado estado = new Estado(nome);
+            estados.put(nome, estado);
+            return true;
+        } else {
+            return false;
         }
-        Estado estado = new Estado(n);
-        estados.put(n, estado);
     }
+    
     
     public void insereTransicao(String nomeOrigem, String valor, String nomeDestino){
         Estado origem = estados.get(nomeOrigem);

@@ -15,7 +15,8 @@ import java.util.Map;
 public class Estado {
     private final String nome;
     private Map<String, Estado> transicoes;
-    private boolean ehFinal;
+    private boolean ehFinal, fimUniao, fimInter;
+    
     
     public Estado (String nome) {
         this.nome = nome;
@@ -34,10 +35,24 @@ public class Estado {
     public boolean isFinal() {
         return ehFinal;
     }
-
+    
     public void setFinal() {
         this.ehFinal = true;
     }
+
+    public void setFimUniaoInter(boolean m1, boolean m2){
+        
+    }
+            
+    public boolean isFimUniao() {
+        return fimUniao;
+    }
+
+    public boolean isFimInter() {
+        return fimInter;
+    }
+    
+    
 
     public void setTransicoes(Map<String, Estado> transicoes) {
         this.transicoes = transicoes;

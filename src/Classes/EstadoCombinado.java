@@ -13,16 +13,18 @@ public class EstadoCombinado {
     private Estado estadoM1;
     private Estado estadoM2;
     
+    boolean finalIntersecao;
+    
     public EstadoCombinado (Estado estadoM1, Estado estadoM2){
         this.estadoM1 = estadoM1;
         this.estadoM2 = estadoM2;
     }
 
-    public Estado getNomeM1() {
+    public Estado getEstadoM1() {
         return estadoM1;
     }
 
-    public Estado getNomeM2() {
+    public Estado getEstadoM2() {
         return estadoM2;
     }
     

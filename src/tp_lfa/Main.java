@@ -44,6 +44,7 @@ public class Main {
             produtoAFD(maquinas.get(0), maquinas.get(1), alfabeto);
             
             
+            
         } catch(Exception ex){
             System.out.println("Erro: " + ex);
         }
@@ -57,7 +58,6 @@ public class Main {
         //Estados iniciais de m1 e m2 para definir o inicial do produto
         Estado inicialm1 = m1.getInicial(), inicialm2 = m2.getInicial();
         
-        
         EstadoCombinado inicial = new EstadoCombinado(inicialm1, inicialm2);
         
         
@@ -65,28 +65,23 @@ public class Main {
         Queue <EstadoCombinado> estados = new LinkedList();
         estados.add(inicial);
         
-        
         EstadoCombinado atual, transitado;
-        String atualm1, atualm2;
+        
+        m3.insereEstado(inicial.getNomeCombinado(), inicial.getEstadoM1().isFinal(), inicial.getEstadoM2().isFinal());
+            
+        
         while(!estados.isEmpty()){
             atual = estados.remove();
-            m3.insereEstado(atual.getNomeCombinado());
-            
             for(String simbolo : alfabeto){
-                
                 if((transitado = atual.getTransicao(simbolo)) != null) {
-                    if(m3.insereEstado(transitado.getNomeCombinado())){
+                    if(m3.insereEstado(transitado.getNomeCombinado(), 
+                            transitado.getEstadoM1().isFinal(), transitado.getEstadoM2().isFinal())){
                         estados.add(transitado);
                     }
-                    System.out.println("Transicao: " + atual.getNomeCombinado() +" "+ transitado.getNomeCombinado() + " " + simbolo);
-                    
                     m3.insereTransicao(atual.getNomeCombinado(),  simbolo, transitado.getNomeCombinado());
-                }
-                
+                }   
             }
-            
         }
-        
         m3.setInicial(inicial.getNomeCombinado()); 
         
         m3.printMaquina();
