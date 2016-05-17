@@ -44,10 +44,11 @@ public class Maquina {
         }
     }
     
-    public boolean insereEstado(String nome, boolean m1, boolean m2){
+    public boolean insereEstado(EstadoCombinado combinado) {
+        String nome = combinado.getNomeCombinado();
         if(estados.get(nome) == null){
             Estado estado = new Estado(nome);
-            estado.setFimUniaoInter(m1, m2);
+            estado.setFimUniaoInter(combinado.getEstadoM1().isFinal(), combinado.getEstadoM2().isFinal());
             estados.put(nome, estado);
             return true;
         } else {
