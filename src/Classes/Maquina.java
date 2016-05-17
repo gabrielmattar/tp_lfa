@@ -13,6 +13,8 @@ import java.util.Map;
  * @author mattar
  */
 public class Maquina {
+    
+    public static Alfabeto alfabeto;
     private String nome;
     private Map<String, Estado> estados;
     private Estado inicial;
@@ -27,6 +29,15 @@ public class Maquina {
         if(estados.get(nome) == null){
             Estado estado = new Estado(nome);
             estados.put(nome, estado);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public boolean insereEstado(Estado estado){
+        if(estados.get(estado.getNome()) == null){
+            estados.put(estado.getNome(), estado);
             return true;
         } else {
             return false;

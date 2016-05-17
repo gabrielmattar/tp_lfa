@@ -5,6 +5,7 @@
  */
 package tp_lfa;
 
+import Classes.Alfabeto;
 import Classes.EstadoCombinado;
 import Classes.Estado;
 import Classes.Maquina;
@@ -29,12 +30,10 @@ public class Main {
         try{
             //Lexico l = new Lexico(new FileReader(new File("teste.txt")));
             Lexico l = new Lexico(new FileReader(new File("entrada/entrada.afd")));
-            Lexema lex = null;
             Sintatico s = new Sintatico(l);
             
             List<Maquina> maquinas = new ArrayList<>() ;
-            List<String> alfabeto = new ArrayList<>() ;
-            s.run(maquinas, alfabeto);
+            s.run(maquinas);
            
             for(Maquina maquina : maquinas){
                 maquina.printMaquina();
@@ -43,9 +42,9 @@ public class Main {
             Main m = new Main();
             //Produtando as maquinas
             
-            Maquina produtoAFD = m.produtoAFD(maquinas.get(0), maquinas.get(1), alfabeto);
+            Maquina produtoAFD = m.produtoAFD(maquinas.get(0), maquinas.get(1), Maquina.alfabeto);
             for (int i = 2; i < maquinas.size(); i++) {
-                produtoAFD = m.produtoAFD(produtoAFD, maquinas.get(i), alfabeto);
+                produtoAFD = m.produtoAFD(produtoAFD, maquinas.get(i), Maquina.alfabeto);
             }
             
             m.Uniao(produtoAFD);
@@ -65,7 +64,7 @@ public class Main {
         m.printMaquina("inter");
     }
     
-    public Maquina produtoAFD(Maquina m1, Maquina m2,  List<String> alfabeto){
+    public Maquina produtoAFD(Maquina m1, Maquina m2,  Alfabeto alfabeto){
         Maquina m3 = new Maquina("Produto");
         
         //Estados iniciais de m1 e m2 para definir o inicial do produto
@@ -85,7 +84,7 @@ public class Main {
         
         while(!estados.isEmpty()){
             atual = estados.remove();
-            for(String simbolo : alfabeto){
+            for(String simbolo : alfabeto.getSimbolos()){
                 if((transitado = atual.getTransicao(simbolo)) != null) {
                     if(m3.insereEstado(transitado.getNomeCombinado(), 
                             transitado.getEstadoM1().isFinal(), transitado.getEstadoM2().isFinal())){

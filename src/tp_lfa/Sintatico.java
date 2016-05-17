@@ -5,7 +5,10 @@
  */
 package tp_lfa;
 
+import Classes.Alfabeto;
+import Classes.Estado;
 import Classes.Maquina;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,8 +36,9 @@ public class Sintatico {
         }
     }
     
-    public void run(List<Maquina> maquinas, List<String> alfabeto) {
-        procAlfabeto(alfabeto);
+    public void run(List<Maquina> maquinas) {
+        Alfabeto alfabeto = procAlfabeto();
+        Maquina.alfabeto = alfabeto;
         while(atual.getType() == TiposLexicos.SIMBOLO){
             maquinas.add(procMaquina());
         }
@@ -50,7 +54,10 @@ public class Sintatico {
         matchToken(TiposLexicos.SIMBOLO);
         matchToken(TiposLexicos.SETA);        
         matchToken(TiposLexicos.ABRE_CHAVES);
-        procEstados(maquina);
+        List<Estado> estados = procEstados();
+        for (Estado estado : estados) {
+            maquina.insereEstado(estado);
+        }
         matchToken(TiposLexicos.FECHA_CHAVES);        
         matchToken(TiposLexicos.PONTO_VIRGULA);
         
@@ -84,23 +91,29 @@ public class Sintatico {
         
     }
 
-    private void procAlfabeto(List<String> alfabeto) {
-        matchToken(TiposLexicos.SIMBOLO);
+    private Alfabeto procAlfabeto() {
+        //matchToken(TiposLexicos.SIMBOLO);
+        String nomeAlfabeto = procNome();
+        Alfabeto alfabeto = new Alfabeto(nomeAlfabeto);
         matchToken(TiposLexicos.SETA);
         matchToken(TiposLexicos.ABRE_CHAVES);
-        procSimbolos(alfabeto);
+        List<String> simbolos = procSimbolos();
+        alfabeto.setSimbolos(simbolos);
         matchToken(TiposLexicos.FECHA_CHAVES);
         matchToken(TiposLexicos.PONTO_VIRGULA);
+        return alfabeto;
     }
     
-    private void procSimbolos(List<String> alfabeto) {
-        alfabeto.add(atual.getToken());
+    private List<String> procSimbolos() {
+        List<String> simbolos = new ArrayList<>();
+        simbolos.add(atual.getToken());
         matchToken(TiposLexicos.SIMBOLO);
         while(atual.getType() == TiposLexicos.VIRGULA) {
             matchToken(TiposLexicos.VIRGULA);
-            alfabeto.add(atual.getToken());
+            simbolos.add(atual.getToken());
             matchToken(TiposLexicos.SIMBOLO);
         }
+        return simbolos;
     }
     
     
@@ -115,15 +128,18 @@ public class Sintatico {
         return nome;
     }
     
-    private void procEstados(Maquina maquina) {
+    private List<Estado> procEstados() {
+        List<Estado> estados = new ArrayList<>();
         String nome = procNome();
-        maquina.insereEstado(nome);
-        
+        estados.add(new Estado(nome));
+        //maquina.insereEstado(nome);
         while(atual.getType() == TiposLexicos.VIRGULA) {
             matchToken(TiposLexicos.VIRGULA);
             nome = procNome();
-            maquina.insereEstado(nome);
+            estados.add(new Estado(nome));
+            //maquina.insereEstado(nome);
         }
+        return estados;
     }
     
     //Retornar lista de transicoes 
