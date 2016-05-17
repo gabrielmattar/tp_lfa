@@ -56,11 +56,10 @@ public class Maquina {
         }
     }
     
-    
-    public void insereTransicao(String nomeOrigem, String valor, String nomeDestino){
-        Estado origem = estados.get(nomeOrigem);
-        Estado destino = estados.get(nomeDestino);
-        origem.setTransicao(valor, destino);
+    public void insereTransicao(Transicao transicao){
+        Estado origem = estados.get(transicao.getOrigem());
+        Estado destino = estados.get(transicao.getDetino());
+        origem.setTransicao(transicao.getSimbolo(), destino);
     }
     
     public void setInicial(String nome){

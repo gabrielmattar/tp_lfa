@@ -58,8 +58,6 @@ public class Estado {
     public boolean isFimInter() {
         return fimInter;
     }
-    
-    
 
     public void setTransicoes(Map<String, Estado> transicoes) {
         this.transicoes = transicoes;

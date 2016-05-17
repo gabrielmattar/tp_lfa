@@ -9,6 +9,7 @@ import Classes.Alfabeto;
 import Classes.EstadoCombinado;
 import Classes.Estado;
 import Classes.Maquina;
+import Classes.Transicao;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class Main {
         m.printMaquina("inter");
     }
     
-    public Maquina produtoAFD(Maquina m1, Maquina m2,  List<String> alfabeto){
+    public Maquina produtoAFD(Maquina m1, Maquina m2,  Alfabeto alfabeto){
         //Maquina produto
         Maquina m3 = new Maquina("Produto");
         
@@ -85,7 +86,7 @@ public class Main {
         
         while(!estados.isEmpty()){
             origem = estados.remove();
-            for(String simbolo : alfabeto){
+            for(String simbolo : alfabeto.getSimbolos()){
                 //Caso a transicao nao va para estado de erro
                 if((destino = origem.getTransicao(simbolo)) != null) {
                     //Caso a insercao for bem sucedida significa q o estado nao foi visitado antes 
@@ -93,7 +94,7 @@ public class Main {
                     if(m3.insereEstado(destino))
                         estados.add(destino);
                     //Inserimos a respectiva transicao na maquina produto
-                    m3.insereTransicao(origem.getNomeCombinado(),  simbolo, destino.getNomeCombinado());
+                    m3.insereTransicao(new Transicao(simbolo, origem.getNomeCombinado(), destino.getNomeCombinado()));
                 }   
             }
         }

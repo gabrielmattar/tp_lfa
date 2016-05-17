@@ -8,6 +8,7 @@ package tp_lfa;
 import Classes.Alfabeto;
 import Classes.Estado;
 import Classes.Maquina;
+import Classes.Transicao;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +65,10 @@ public class Sintatico {
         matchToken(TiposLexicos.SIMBOLO);
         matchToken(TiposLexicos.SETA);        
         matchToken(TiposLexicos.ABRE_CHAVES);
-        procTransicoes(maquina);
+        List<Transicao> transicoes = procTransicoes();
+        for (Transicao transicao : transicoes) {
+            maquina.insereTransicao(transicao);
+        }
         matchToken(TiposLexicos.FECHA_CHAVES);        
         matchToken(TiposLexicos.PONTO_VIRGULA);
         
@@ -80,13 +84,14 @@ public class Sintatico {
         matchToken(TiposLexicos.SIMBOLO);
         matchToken(TiposLexicos.SETA);        
         matchToken(TiposLexicos.ABRE_CHAVES);
-        procEstadosFinais(maquina);
+        List<String> estadosFinais = procEstadosFinais();
+        for (String finais : estadosFinais) {
+            maquina.setFinal(finais);
+        }
         matchToken(TiposLexicos.FECHA_CHAVES);        
         matchToken(TiposLexicos.PONTO_VIRGULA);
         
-        
         matchToken(TiposLexicos.FECHA_CHAVES);
-        
         return maquina;
         
     }
@@ -143,19 +148,21 @@ public class Sintatico {
     }
     
     //Retornar lista de transicoes 
-    private void procTransicoes(Maquina maquina) {
+    private List<Transicao> procTransicoes() {
         //Pode nao haver transicao
-        if(atual.getType() == TiposLexicos.ABRE_PARENTESES) { 
-            procTransicao(maquina);
+        List<Transicao> transicoes = new ArrayList<>();
+        if(atual.getType() == TiposLexicos.ABRE_PARENTESES) {
+            transicoes.add(procTransicao());
             while(atual.getType() == TiposLexicos.VIRGULA) {
                 matchToken(TiposLexicos.VIRGULA);
-                procTransicao(maquina);
+                transicoes.add(procTransicao());
             }
         }
+        return transicoes;
     }
     
     //Retornar transicao
-    private void procTransicao(Maquina maquina) {
+    private Transicao procTransicao() {
         matchToken(TiposLexicos.ABRE_PARENTESES);
         String origem = procNome();
         matchToken(TiposLexicos.VIRGULA);
@@ -164,18 +171,22 @@ public class Sintatico {
         matchToken(TiposLexicos.FECHA_PARENTESES);
         matchToken(TiposLexicos.IGUAL);
         String destino = procNome();
-        maquina.insereTransicao(origem, valor, destino);
+        //Transicao transicao = new Transicao(valor, origem, destino);
+        return new Transicao(valor, origem, destino);
+        //maquina.insereTransicao(transicao);
     }
     
-    private void procEstadosFinais(Maquina maquina) {
+    private List<String> procEstadosFinais() {
+        List<String> finais = new ArrayList<>();
         if(atual.getType() == TiposLexicos.SIMBOLO) {
-            String ehfinal = procNome();
-            maquina.setFinal(ehfinal);
+            finais.add(procNome());
+            //maquina.setFinal(ehfinal);
             while(atual.getType() == TiposLexicos.VIRGULA) {
                 matchToken(TiposLexicos.VIRGULA);
-                ehfinal = procNome();
-                maquina.setFinal(ehfinal);
+                finais.add(procNome());
+                //maquina.setFinal(ehfinal);
             }
         }
+        return finais;
     }
 }
