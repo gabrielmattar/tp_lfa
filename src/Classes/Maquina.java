@@ -5,6 +5,9 @@
  */
 package Classes;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,6 +77,12 @@ public class Maquina {
         return inicial;
     }
     
+    
+    public void writeLine(String conteudo, FileOutputStream file) throws IOException{
+        conteudo += "\n";
+        file.write(conteudo.getBytes());
+        
+    }
     public void printMaquina(){
         System.out.println("\n\nNome maquina: " + nome + "\n");
         for(Map.Entry<String, Estado> estado : estados.entrySet()){
@@ -89,26 +98,48 @@ public class Maquina {
         }
     }
     
-    public void printMaquina(String metodo){
-        System.out.println("\n\nNome maquina: " + nome + "   -> " + metodo + "\n");
-        for(Map.Entry<String, Estado> estado : estados.entrySet()){
-            Map<String, Estado> transicoes = estado.getValue().getTransicoes();
-            if("uniao".equals(metodo)){
-                if(estado.getValue().isFimUniao()){
-                    System.out.println(" " + estado.getKey() + " (final)");
-                } else{ 
-                    System.out.println(" " + estado.getKey());
+    public void toDot() throws IOException{
+        try (FileOutputStream file = new FileOutputStream(new File("saidas/" + this.nome + ".dot"))) {
+            writeLine("digraph \"" + this.nome + "\" {", file);
+            writeLine("_nil [style=\"invis\"];", file);
+            writeLine("_nil -> \"" + inicial.getNome() + "\" " + "[label=\"\"];" , file);
+            for(Map.Entry<String, Estado> estado : estados.entrySet()){
+                Map<String, Estado> transicoes = estado.getValue().getTransicoes();
+                if(estado.getValue().isFinal()){
+                    writeLine("\"" + estado.getKey() + "\" [peripheries=2];",file);
                 }
-            } else if("inter".equals(metodo)){
-                if(estado.getValue().isFimInter()){
-                    System.out.println(" " + estado.getKey() + " (final)");
-                } else{ 
-                    System.out.println(" " + estado.getKey());
+
+                for(Map.Entry<String, Estado> transicao : transicoes.entrySet()) {
+                    writeLine("\"" + estado.getKey() + "\" " + "-> \"" + transicao.getValue().getNome() + "\" [label=" +transicao.getKey() + "];" ,file);
                 }
             }
-            for(Map.Entry<String, Estado> transicao : transicoes.entrySet()) {
-                System.out.println("   " + transicao.getKey() + " " + transicao.getValue().getNome());
+            
+            writeLine("}", file);
+        }
+    }
+    
+    public void toDot(String metodo) throws IOException {
+        try (FileOutputStream file = new FileOutputStream(new File("saidas/" + metodo + ".dot"))) {
+            writeLine("digraph \"" + this.nome + "\" {", file);
+            writeLine("_nil [style=\"invis\"];", file);
+            writeLine("_nil -> \"[" + inicial.getNome() + "]\" " + "[label=\"\"];" , file);
+            for(Map.Entry<String, Estado> estado : estados.entrySet()){
+                Map<String, Estado> transicoes = estado.getValue().getTransicoes();
+                if("uniao".equals(metodo)){
+                    if(estado.getValue().isFimUniao()){
+                        writeLine("\"[" + estado.getKey() + "]\" [peripheries=2];",file);
+                    }
+                } else if("intersecao".equals(metodo)){
+                    if(estado.getValue().isFimInter()){
+                        writeLine("\"[" + estado.getKey() + "]\" [peripheries=2];",file);
+                    } 
+                }
+                for(Map.Entry<String, Estado> transicao : transicoes.entrySet()) {
+                    writeLine("\"[" + estado.getKey() + "]\" " + "-> \"[" + transicao.getValue().getNome() + "]\" [label=" +transicao.getKey() + "];" ,file);
+                }
             }
+            
+            writeLine("}", file);
         }
     }
 }

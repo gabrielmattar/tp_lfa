@@ -12,6 +12,7 @@ import Classes.Maquina;
 import Classes.Transicao;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,11 +34,13 @@ public class Main {
             Lexico l = new Lexico(new FileReader(new File("entrada/entrada.afd")));
             Sintatico s = new Sintatico(l);
             
+            
+            
             List<Maquina> maquinas = new ArrayList<>() ;
             s.run(maquinas);
            
             for(Maquina maquina : maquinas){
-                maquina.printMaquina();
+                maquina.toDot();
             }
             
             Main m = new Main();
@@ -52,17 +55,18 @@ public class Main {
             m.Intersecao(produtoAFD);
             
             
+            
         } catch(Exception ex){
             System.out.println("Erro: " + ex);
         }
     }
     
-    public void Uniao(Maquina m){
-        m.printMaquina("uniao");
+    public void Uniao(Maquina m) throws IOException{
+        m.toDot("uniao");
     }
     
-    public void Intersecao(Maquina m){
-        m.printMaquina("inter");
+    public void Intersecao(Maquina m) throws IOException{
+        m.toDot("intersecao");
     }
     
     public Maquina produtoAFD(Maquina m1, Maquina m2,  Alfabeto alfabeto){
@@ -98,7 +102,6 @@ public class Main {
                 }   
             }
         }
-        m3.printMaquina();
         return m3;
     }
  
