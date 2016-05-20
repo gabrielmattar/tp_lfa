@@ -1,0 +1,25 @@
+#!/bin/bash
+
+if [ ! -d "$dist" ]; then
+	mkdir build &>/dev/null
+	mkdir dist &>/dev/null
+	javac src/**/*.java -d build/
+
+	cd build
+
+	jar -cfe ../dist/GeradorLFA.jar tp_lfa.Main  **/*.class
+	cd ..
+fi
+
+rm -rf saidas
+mkdir saidas
+java -jar dist/GeradorLFA.jar $1 saidas/
+
+cd saidas
+for i in *.dot; do
+	extension="${i##*.}"
+	filename="${i%.*}"
+	pdf='.pdf'
+	saida=$filename$pdf
+	dot -Tpdf -o $saida $i
+done
