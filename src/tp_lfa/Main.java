@@ -76,7 +76,7 @@ public class Main {
         for (Maquina maquina : maquinas) {
             maquina.toDot();
         }
-        produtoAFD.printMaquina("uniao");
+        //produtoAFD.printMaquina("uniao");
     }
     
     public void Intersecao(List<Maquina> maquinas) throws IOException{
@@ -88,7 +88,7 @@ public class Main {
         for (Maquina maquina : maquinas) {
             maquina.toDot();
         }
-        produtoAFD.printMaquina("intersecao");
+        //produtoAFD.printMaquina("intersecao");
     }
     
     public static Maquina produtoAFD(Maquina m1, Maquina m2,  Alfabeto alfabeto, String method){

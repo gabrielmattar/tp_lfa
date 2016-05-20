@@ -120,7 +120,7 @@ public class Maquina {
     }
     
     public void toDot(String metodo) throws IOException {
-        System.out.println("\n\n\n\n");
+        //System.out.println("\n\n\n\n");
         try (FileOutputStream file = new FileOutputStream(new File(Main.saida +"/" + metodo + ".dot"))) {
             writeLine("digraph \"" + this.nome + "\" {", file);
             writeLine("_nil [style=\"invis\"];", file);
@@ -128,7 +128,7 @@ public class Maquina {
             for(Map.Entry<String, Estado> estado : estados.entrySet()){
                 Map<String, Estado> transicoes = estado.getValue().getTransicoes();
                 if(estado.getValue().isFinal()){
-                    System.out.println("FINAL = " + estado.getValue().getNome());
+                    //System.out.println("FINAL = " + estado.getValue().getNome());
                     writeLine("\"[" + estado.getKey() + "]\" [peripheries=2];",file);
                 }
                 for(Map.Entry<String, Estado> transicao : transicoes.entrySet()) {
