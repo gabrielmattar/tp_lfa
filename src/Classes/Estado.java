@@ -15,7 +15,7 @@ import java.util.Map;
 public class Estado {
     private final String nome;
     private Map<String, Estado> transicoes;
-    private boolean ehFinal, fimUniao, fimInter;
+    private boolean ehFinal;
     
     
     public Estado (String nome) {
@@ -40,25 +40,16 @@ public class Estado {
         this.ehFinal = true;
     }
 
-    public void setFimUniaoInter(boolean m1, boolean m2){
-        fimInter = false;
-        fimUniao = false;
-        if(m1 && m2) {
-            fimInter = true;
-        }
-        if(m1 || m2) {
-            fimUniao = true;
+    public void setFim(boolean m1, boolean m2, String method) throws IllegalArgumentException{
+        if(method.equals("uniao")){
+            ehFinal = m1 || m2;
+        } else if(method.equals("intersecao")){
+            ehFinal = m1 && m2;
+        } else {
+            throw new IllegalArgumentException("metodo não encontrado");
         }
     }
             
-    public boolean isFimUniao() {
-        return fimUniao;
-    }
-
-    public boolean isFimInter() {
-        return fimInter;
-    }
-
     public void setTransicoes(Map<String, Estado> transicoes) {
         this.transicoes = transicoes;
     }

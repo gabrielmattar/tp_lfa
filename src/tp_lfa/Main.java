@@ -24,6 +24,8 @@ import java.util.Queue;
  */
 public class Main {
 
+    public static String saida;
+    
     /**
      * @param args the command line arguments
      */
@@ -31,7 +33,9 @@ public class Main {
         // TODO code application logic here
         try{
             //Lexico l = new Lexico(new FileReader(new File("teste.txt")));
-            Lexico l = new Lexico(new FileReader(new File("entrada/entrada.afd")));
+            //Lexico l = new Lexico(new FileReader(new File("entrada/entrada.afd")));
+            Main.saida = args[1];
+            Lexico l = new Lexico(new FileReader(args[0]));
             Sintatico s = new Sintatico(l);
             
             
@@ -45,14 +49,14 @@ public class Main {
             
             Main m = new Main();
             //Produtando as maquinas
-            
+            /*
             Maquina produtoAFD = m.produtoAFD(maquinas.get(0), maquinas.get(1), Maquina.alfabeto);
             for (int i = 2; i < maquinas.size(); i++) {
                 produtoAFD = m.produtoAFD(produtoAFD, maquinas.get(i), Maquina.alfabeto);
             }
-            
-            m.Uniao(produtoAFD);
-            m.Intersecao(produtoAFD);
+            */
+            m.Uniao(maquinas);
+            m.Intersecao(maquinas);
             
             
             
@@ -61,15 +65,33 @@ public class Main {
         }
     }
     
-    public void Uniao(Maquina m) throws IOException{
-        m.toDot("uniao");
+    
+    public void Uniao(List<Maquina> maquinas) throws IOException{
+        Maquina produtoAFD = produtoAFD(maquinas.get(0), maquinas.get(1), Maquina.alfabeto, "uniao");
+        for (int i = 2; i < maquinas.size(); i++) {
+            produtoAFD = produtoAFD(produtoAFD, maquinas.get(i), Maquina.alfabeto, "uniao");
+        }
+        
+        produtoAFD.toDot("uniao");
+        for (Maquina maquina : maquinas) {
+            maquina.toDot();
+        }
+        produtoAFD.printMaquina("uniao");
     }
     
-    public void Intersecao(Maquina m) throws IOException{
-        m.toDot("intersecao");
+    public void Intersecao(List<Maquina> maquinas) throws IOException{
+        Maquina produtoAFD = produtoAFD(maquinas.get(0), maquinas.get(1), Maquina.alfabeto, "intersecao");
+        for (int i = 2; i < maquinas.size(); i++) {
+            produtoAFD = produtoAFD(produtoAFD, maquinas.get(i), Maquina.alfabeto, "intersecao");
+        }
+        produtoAFD.toDot("intersecao");
+        for (Maquina maquina : maquinas) {
+            maquina.toDot();
+        }
+        produtoAFD.printMaquina("intersecao");
     }
     
-    public Maquina produtoAFD(Maquina m1, Maquina m2,  Alfabeto alfabeto){
+    public static Maquina produtoAFD(Maquina m1, Maquina m2,  Alfabeto alfabeto, String method){
         //Maquina produto
         Maquina m3 = new Maquina("Produto");
         
@@ -85,7 +107,7 @@ public class Main {
         estados.add(inicial);
         
         //Maquina m3 recebe o estado inicial e tem o estado inicial definido
-        m3.insereEstado(inicial);
+        m3.insereEstado(inicial, method);
         m3.setInicial(inicial.getNomeCombinado()); 
         
         while(!estados.isEmpty()){
@@ -95,7 +117,7 @@ public class Main {
                 if((destino = origem.getTransicao(simbolo)) != null) {
                     //Caso a insercao for bem sucedida significa q o estado nao foi visitado antes 
                     //logo adicionamos ele na fila
-                    if(m3.insereEstado(destino))
+                    if(m3.insereEstado(destino, method))
                         estados.add(destino);
                     //Inserimos a respectiva transicao na maquina produto
                     m3.insereTransicao(new Transicao(simbolo, origem.getNomeCombinado(), destino.getNomeCombinado()));

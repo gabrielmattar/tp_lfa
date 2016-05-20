@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import tp_lfa.Main;
 
 /**
  *
@@ -47,11 +48,11 @@ public class Maquina {
         }
     }
     
-    public boolean insereEstado(EstadoCombinado combinado) {
+    public boolean insereEstado(EstadoCombinado combinado, String method) {
         String nome = combinado.getNomeCombinado();
         if(estados.get(nome) == null){
             Estado estado = new Estado(nome);
-            estado.setFimUniaoInter(combinado.getEstadoM1().isFinal(), combinado.getEstadoM2().isFinal());
+            estado.setFim(combinado.getEstadoM1().isFinal(), combinado.getEstadoM2().isFinal(), method);
             estados.put(nome, estado);
             return true;
         } else {
@@ -83,8 +84,8 @@ public class Maquina {
         file.write(conteudo.getBytes());
         
     }
-    public void printMaquina(){
-        System.out.println("\n\nNome maquina: " + nome + "\n");
+    public void printMaquina(String metodo){
+        System.out.println("\n\nNome maquina: " + nome + "   " + metodo + "\n");
         for(Map.Entry<String, Estado> estado : estados.entrySet()){
             Map<String, Estado> transicoes = estado.getValue().getTransicoes();
             if(estado.getValue().isFinal()){
@@ -99,7 +100,7 @@ public class Maquina {
     }
     
     public void toDot() throws IOException{
-        try (FileOutputStream file = new FileOutputStream(new File("saidas/" + this.nome + ".dot"))) {
+        try (FileOutputStream file = new FileOutputStream(new File(Main.saida+"/" + this.nome + ".dot"))) {
             writeLine("digraph \"" + this.nome + "\" {", file);
             writeLine("_nil [style=\"invis\"];", file);
             writeLine("_nil -> \"" + inicial.getNome() + "\" " + "[label=\"\"];" , file);
@@ -119,20 +120,16 @@ public class Maquina {
     }
     
     public void toDot(String metodo) throws IOException {
-        try (FileOutputStream file = new FileOutputStream(new File("saidas/" + metodo + ".dot"))) {
+        System.out.println("\n\n\n\n");
+        try (FileOutputStream file = new FileOutputStream(new File(Main.saida +"/" + metodo + ".dot"))) {
             writeLine("digraph \"" + this.nome + "\" {", file);
             writeLine("_nil [style=\"invis\"];", file);
             writeLine("_nil -> \"[" + inicial.getNome() + "]\" " + "[label=\"\"];" , file);
             for(Map.Entry<String, Estado> estado : estados.entrySet()){
                 Map<String, Estado> transicoes = estado.getValue().getTransicoes();
-                if("uniao".equals(metodo)){
-                    if(estado.getValue().isFimUniao()){
-                        writeLine("\"[" + estado.getKey() + "]\" [peripheries=2];",file);
-                    }
-                } else if("intersecao".equals(metodo)){
-                    if(estado.getValue().isFimInter()){
-                        writeLine("\"[" + estado.getKey() + "]\" [peripheries=2];",file);
-                    } 
+                if(estado.getValue().isFinal()){
+                    System.out.println("FINAL = " + estado.getValue().getNome());
+                    writeLine("\"[" + estado.getKey() + "]\" [peripheries=2];",file);
                 }
                 for(Map.Entry<String, Estado> transicao : transicoes.entrySet()) {
                     writeLine("\"[" + estado.getKey() + "]\" " + "-> \"[" + transicao.getValue().getNome() + "]\" [label=" +transicao.getKey() + "];" ,file);
@@ -142,4 +139,5 @@ public class Maquina {
             writeLine("}", file);
         }
     }
+    
 }

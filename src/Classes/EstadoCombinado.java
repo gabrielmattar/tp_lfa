@@ -10,10 +10,8 @@ package Classes;
  * @author mattar
  */
 public class EstadoCombinado {
-    private Estado estadoM1;
-    private Estado estadoM2;
-    
-    boolean finalIntersecao;
+    private final Estado estadoM1;
+    private final Estado estadoM2;
     
     public EstadoCombinado (Estado estadoM1, Estado estadoM2){
         this.estadoM1 = estadoM1;
