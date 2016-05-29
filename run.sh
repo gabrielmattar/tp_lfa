@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# -eq 0 ]; then
-    echo "Usar: ./gerador entrada/[AFD's de entrada]"
+    echo "Usar: ./run.sh entrada/[AFD's de entrada]"
     exit 1
 fi
 
