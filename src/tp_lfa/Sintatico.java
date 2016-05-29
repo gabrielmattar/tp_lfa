@@ -19,6 +19,8 @@ import java.util.List;
 public class Sintatico {
     private final Lexico lexico;
     private Lexema atual;
+    private List<Estado> estados;
+    private Maquina maquina;
     
     public Sintatico(Lexico lexico) {
         this.lexico = lexico;
@@ -46,7 +48,6 @@ public class Sintatico {
     }
     
     private Maquina procMaquina() {
-        Maquina maquina;
         String nome = procNome();
         maquina = new Maquina(nome);
         
@@ -55,7 +56,7 @@ public class Sintatico {
         matchToken(TiposLexicos.SIMBOLO);
         matchToken(TiposLexicos.SETA);        
         matchToken(TiposLexicos.ABRE_CHAVES);
-        List<Estado> estados = procEstados();
+        estados = procEstados();
         for (Estado estado : estados) {
             maquina.insereEstado(estado);
         }
@@ -77,6 +78,10 @@ public class Sintatico {
         matchToken(TiposLexicos.SETA);
         
         String inicial = procNome();
+        if(!maquina.estadoExists(inicial)){
+            System.out.println(lexico.getLinha() + ": Estado não existe ["+inicial+"]");
+            System.exit(1);
+        }
         maquina.setInicial(inicial);
         
         matchToken(TiposLexicos.PONTO_VIRGULA);
@@ -86,6 +91,10 @@ public class Sintatico {
         matchToken(TiposLexicos.ABRE_CHAVES);
         List<String> estadosFinais = procEstadosFinais();
         for (String finais : estadosFinais) {
+            if(!maquina.estadoExists(finais)){
+                System.out.println(lexico.getLinha() + ": Estado não existe ["+finais+"]");
+                System.exit(1);
+            }
             maquina.setFinal(finais);
         }
         matchToken(TiposLexicos.FECHA_CHAVES);        
@@ -165,12 +174,24 @@ public class Sintatico {
     private Transicao procTransicao() {
         matchToken(TiposLexicos.ABRE_PARENTESES);
         String origem = procNome();
+        if(!maquina.estadoExists(origem)){
+            System.out.println(lexico.getLinha() + ": Estado não existe ["+origem+"]");
+            System.exit(1);
+        }
         matchToken(TiposLexicos.VIRGULA);
         String valor = atual.getToken();
+        if(!Maquina.alfabeto.getSimbolos().contains(valor)){
+            System.out.println(lexico.getLinha() + ": Símbolo não presente no alfabeto ["+valor+"]");
+            System.exit(1);
+        }
         matchToken(TiposLexicos.SIMBOLO);
         matchToken(TiposLexicos.FECHA_PARENTESES);
         matchToken(TiposLexicos.IGUAL);
         String destino = procNome();
+        if(!maquina.estadoExists(destino)){
+            System.out.println(lexico.getLinha() + ": Estado não existe ["+destino+"]");
+            System.exit(1);
+        }
         //Transicao transicao = new Transicao(valor, origem, destino);
         return new Transicao(valor, origem, destino);
         //maquina.insereTransicao(transicao);

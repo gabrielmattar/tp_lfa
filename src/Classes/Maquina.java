@@ -60,6 +60,10 @@ public class Maquina {
         }
     }
     
+    public boolean estadoExists(String nome){
+        return estados.get(nome) != null;
+    }
+    
     public void insereTransicao(Transicao transicao){
         Estado origem = estados.get(transicao.getOrigem());
         Estado destino = estados.get(transicao.getDetino());

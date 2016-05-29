@@ -19,6 +19,11 @@ fi
 rm -rf saidas
 mkdir saidas
 java -jar dist/GeradorLFA.jar $1 saidas/
+STATUS=$?
+if [ $STATUS -eq 1 ]; then 
+    echo "Houve um erro no programa"
+    exit 1
+fi
 
 cd saidas
 for i in *.dot; do
