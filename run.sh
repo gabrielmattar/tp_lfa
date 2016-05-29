@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ $# -eq 0 ]; then
+    echo "Usar: ./gerador entrada/[AFD's de entrada]"
+    exit 1
+fi
+
 if [ ! -d "$dist" ]; then
 	mkdir build &>/dev/null
 	mkdir dist &>/dev/null
@@ -23,3 +28,4 @@ for i in *.dot; do
 	saida=$filename$pdf
 	dot -Tpdf -o $saida $i
 done
+echo "Arquivos de saida .dot gerados na pasta: saida/"

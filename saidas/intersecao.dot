@@ -1,24 +1,15 @@
 digraph "Produto" {
 _nil [style="invis"];
-_nil -> "[A,A,A,A]" [label=""];
-"[B,A,,]" -> "[B,A,,]" [label=0];
-"[B,A,,]" -> "[B,B,,]" [label=1];
-"[B,B,C,D]" -> "[B,A,C,E]" [label=0];
-"[B,B,C,D]" -> "[B,B,C,D]" [label=1];
-"[B,B,C,C]" -> "[B,A,C,C]" [label=0];
-"[B,B,C,C]" -> "[B,B,C,D]" [label=1];
-"[,A,,]" -> "[,A,,]" [label=0];
-"[,A,,]" -> "[,B,,]" [label=1];
-"[,B,,]" -> "[,A,,]" [label=0];
-"[,B,,]" -> "[,B,,]" [label=1];
-"[A,A,A,A]" -> "[B,A,B,B]" [label=0];
-"[A,A,A,A]" -> "[,B,,]" [label=1];
-"[B,A,B,B]" -> "[B,A,,]" [label=0];
-"[B,A,B,B]" -> "[B,B,C,C]" [label=1];
-"[B,A,C,C]" -> "[B,A,C,C]" [label=0];
-"[B,A,C,C]" -> "[B,B,C,D]" [label=1];
-"[B,A,C,E]" -> "[B,A,C,C]" [label=0];
-"[B,A,C,E]" -> "[B,B,C,D]" [label=1];
-"[B,B,,]" -> "[B,A,,]" [label=0];
-"[B,B,,]" -> "[B,B,,]" [label=1];
+_nil -> "[A,A]" [label=""];
+"[,A]" -> "[,A]" [label=0];
+"[,A]" -> "[,B]" [label=1];
+"[A,A]" -> "[B,A]" [label=0];
+"[A,A]" -> "[,B]" [label=1];
+"[,B]" -> "[,A]" [label=0];
+"[,B]" -> "[,B]" [label=1];
+"[B,A]" -> "[B,A]" [label=0];
+"[B,A]" -> "[B,B]" [label=1];
+"[B,B]" [peripheries=2];
+"[B,B]" -> "[B,A]" [label=0];
+"[B,B]" -> "[B,B]" [label=1];
 }
